@@ -15,6 +15,7 @@
 #import "FBErrorBuilder.h"
 #import "FBExceptionHandler.h"
 #import "FBMjpegServer.h"
+#import "FBH264Server.h"
 #import "FBRouteRequest.h"
 #import "FBRuntimeUtils.h"
 #import "FBSession.h"
@@ -47,6 +48,7 @@ static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
 @property (nonatomic, strong) RoutingHTTPServer *server;
 @property (atomic, assign) BOOL keepAlive;
 @property (nonatomic, nullable) FBTCPSocket *screenshotsBroadcaster;
+@property (nonatomic, nullable) FBTCPSocket *h264Broadcaster;
 @end
 
 @implementation FBWebServer
@@ -72,6 +74,7 @@ static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
   self.exceptionHandler = [FBExceptionHandler new];
   [self startHTTPServer];
   [self initScreenshotsBroadcaster];
+  [self initH264Broadcaster];
 
   self.keepAlive = YES;
   NSRunLoop *runLoop = [NSRunLoop mainRunLoop];
@@ -135,6 +138,19 @@ static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
   }
 }
 
+- (void)initH264Broadcaster
+{
+  self.h264Broadcaster = [[FBTCPSocket alloc]
+                           initWithPort:(uint16_t)FBConfiguration.h264ServerPort];
+  self.h264Broadcaster.delegate = [[FBH264Server alloc] init];
+  NSError *error;
+  if (![self.h264Broadcaster startWithError:&error]) {
+    [FBLogger logFmt:@"Cannot init H264 broadcaster on port %@. Error: %@",
+     @(FBConfiguration.h264ServerPort), error.description];
+    self.h264Broadcaster = nil;
+  }
+}
+
 - (void)stopScreenshotsBroadcaster
 {
   if (nil == self.screenshotsBroadcaster) {
@@ -161,10 +177,19 @@ static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
 {
   [FBSession.activeSession kill];
   [self stopScreenshotsBroadcaster];
+  [self stopH264Broadcaster];
   if (self.server.isRunning) {
     [self.server stop:NO];
   }
   self.keepAlive = NO;
+}
+
+- (void)stopH264Broadcaster
+{
+  if (nil == self.h264Broadcaster) {
+    return;
+  }
+  [self.h264Broadcaster stop];
 }
 
 - (BOOL)attemptToStartServer:(RoutingHTTPServer *)server onPort:(NSInteger)port withError:(NSError **)error

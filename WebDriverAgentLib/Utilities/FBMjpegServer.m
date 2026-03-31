@@ -13,6 +13,7 @@
 
 #import "GCDAsyncSocket.h"
 #import "FBConfiguration.h"
+#import "FBH264Server.h"
 #import "FBLogger.h"
 #import "FBScreenshot.h"
 #import "FBImageProcessor.h"
@@ -85,6 +86,12 @@ static const char *QUEUE_NAME = "JPEG Screenshots Provider Queue";
     }
   }
 
+  // Yield to H.264 server — avoid competing for the serialized screenshot API
+  if ([FBH264Server hasActiveClients]) {
+    [self scheduleNextScreenshotWithInterval:timerInterval timeStarted:timeStarted];
+    return;
+  }
+
   NSError *error;
   CGFloat compressionQuality = MAX(FBMinCompressionQuality,
                                    MIN(FBMaxCompressionQuality, FBConfiguration.mjpegServerScreenshotQuality / 100.0));
@@ -106,11 +113,17 @@ static const char *QUEUE_NAME = "JPEG Screenshots Provider Queue";
   self.consecutiveScreenshotFailures = 0;
 
   CGFloat scalingFactor = FBConfiguration.mjpegScalingFactor / 100.0;
-  [self.imageProcessor submitImageData:screenshotData
-                         scalingFactor:scalingFactor
-                     completionHandler:^(NSData * _Nonnull scaled) {
-    [self sendScreenshot:scaled];
-  }];
+  BOOL needsProcessing = scalingFactor < 1.0 || FBConfiguration.mjpegShouldFixOrientation;
+  if (needsProcessing) {
+    [self.imageProcessor submitImageData:screenshotData
+                           scalingFactor:scalingFactor
+                       completionHandler:^(NSData * _Nonnull scaled) {
+      [self sendScreenshot:scaled];
+    }];
+  } else {
+    // Skip the image processor entirely — send the JPEG straight to clients
+    [self sendScreenshot:screenshotData];
+  }
 
   [self scheduleNextScreenshotWithInterval:timerInterval timeStarted:timeStarted];
 }

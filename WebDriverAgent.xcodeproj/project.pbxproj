@@ -78,6 +78,8 @@
 		641EE5F62240C5CA00173FCB /* FBRouteRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9AB7881CAEDF0C008C271F /* FBRouteRequest.m */; };
 		641EE5F72240C5CA00173FCB /* FBResponseJSONPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9AB7811CAEDF0C008C271F /* FBResponseJSONPayload.m */; };
 		641EE5F92240C5CA00173FCB /* FBMjpegServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7155D702211DCEF400166C20 /* FBMjpegServer.m */; };
+		AA0H264E0100000000000001 /* FBH264Encoder.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0H264E0100000000000010 /* FBH264Encoder.m */; };
+		AA0H264S0100000000000001 /* FBH264Server.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0H264S0100000000000010 /* FBH264Server.m */; };
 		641EE5FA2240C5CA00173FCB /* XCUIDevice+FBHealthCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = EEDFE1201D9C06F800E6FFE5 /* XCUIDevice+FBHealthCheck.m */; };
 		641EE5FD2240C5CA00173FCB /* FBBaseActionsSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7140974D1FAE20EE008FB2C5 /* FBBaseActionsSynthesizer.m */; };
 		641EE5FE2240C5CA00173FCB /* XCUIElement+FBWebDriverAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = EEE376481D59FAE900ED88DD /* XCUIElement+FBWebDriverAttributes.m */; };
@@ -275,6 +277,8 @@
 		641EE6DD2240C5CA00173FCB /* FBDebugLogDelegateDecorator.h in Headers */ = {isa = PBXBuildFile; fileRef = EE7E27181D06C69F001BEC7B /* FBDebugLogDelegateDecorator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		641EE6DE2240C5CA00173FCB /* XCUIDevice+FBHealthCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = EEDFE11F1D9C06F800E6FFE5 /* XCUIDevice+FBHealthCheck.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		641EE6DF2240C5CA00173FCB /* FBMjpegServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 7155D701211DCEF400166C20 /* FBMjpegServer.h */; };
+		AA0H264E0100000000000002 /* FBH264Encoder.h in Headers */ = {isa = PBXBuildFile; fileRef = AA0H264E0100000000000020 /* FBH264Encoder.h */; };
+		AA0H264S0100000000000002 /* FBH264Server.h in Headers */ = {isa = PBXBuildFile; fileRef = AA0H264S0100000000000020 /* FBH264Server.h */; };
 		641EE6E02240C5CA00173FCB /* XCUIRecorderNodeFinderMatch.h in Headers */ = {isa = PBXBuildFile; fileRef = EE35AD051E3B77D600A02D78 /* XCUIRecorderNodeFinderMatch.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		641EE6E12240C5CA00173FCB /* XCUIApplicationProcess.h in Headers */ = {isa = PBXBuildFile; fileRef = EE35ACFB1E3B77D600A02D78 /* XCUIApplicationProcess.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		641EE6E22240C5CA00173FCB /* FBW3CActionsSynthesizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 714097491FAE1B51008FB2C5 /* FBW3CActionsSynthesizer.h */; };
@@ -376,6 +380,10 @@
 		7155B424224D5BA10042A993 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7155B423224D5B980042A993 /* XCTest.framework */; };
 		7155D703211DCEF400166C20 /* FBMjpegServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 7155D701211DCEF400166C20 /* FBMjpegServer.h */; };
 		7155D704211DCEF400166C20 /* FBMjpegServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7155D702211DCEF400166C20 /* FBMjpegServer.m */; };
+		AA0H264E0100000000000003 /* FBH264Encoder.h in Headers */ = {isa = PBXBuildFile; fileRef = AA0H264E0100000000000020 /* FBH264Encoder.h */; };
+		AA0H264E0100000000000004 /* FBH264Encoder.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0H264E0100000000000010 /* FBH264Encoder.m */; };
+		AA0H264S0100000000000003 /* FBH264Server.h in Headers */ = {isa = PBXBuildFile; fileRef = AA0H264S0100000000000020 /* FBH264Server.h */; };
+		AA0H264S0100000000000004 /* FBH264Server.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0H264S0100000000000010 /* FBH264Server.m */; };
 		7157B291221DADD2001C348C /* FBXCAXClientProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 7157B28F221DADD2001C348C /* FBXCAXClientProxy.h */; };
 		7157B292221DADD2001C348C /* FBXCAXClientProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7157B290221DADD2001C348C /* FBXCAXClientProxy.m */; };
 		715A84CF2DD92AD3007134CC /* FBElementHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 715A84CE2DD92AD3007134CC /* FBElementHelpers.m */; };
@@ -1023,6 +1031,10 @@
 		7155B425224D5C130042A993 /* XCTAutomationSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTAutomationSupport.framework; path = Platforms/AppleTVOS.platform/Developer/Library/PrivateFrameworks/XCTAutomationSupport.framework; sourceTree = DEVELOPER_DIR; };
 		7155D701211DCEF400166C20 /* FBMjpegServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBMjpegServer.h; sourceTree = "<group>"; };
 		7155D702211DCEF400166C20 /* FBMjpegServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBMjpegServer.m; sourceTree = "<group>"; };
+		AA0H264E0100000000000020 /* FBH264Encoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBH264Encoder.h; sourceTree = "<group>"; };
+		AA0H264E0100000000000010 /* FBH264Encoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBH264Encoder.m; sourceTree = "<group>"; };
+		AA0H264S0100000000000020 /* FBH264Server.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBH264Server.h; sourceTree = "<group>"; };
+		AA0H264S0100000000000010 /* FBH264Server.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBH264Server.m; sourceTree = "<group>"; };
 		7157B28F221DADD2001C348C /* FBXCAXClientProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBXCAXClientProxy.h; sourceTree = "<group>"; };
 		7157B290221DADD2001C348C /* FBXCAXClientProxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBXCAXClientProxy.m; sourceTree = "<group>"; };
 		715A84CD2DD92AD3007134CC /* FBElementHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBElementHelpers.h; sourceTree = "<group>"; };
@@ -1960,6 +1972,10 @@
 				EE9B76A51CF7A43900275851 /* FBMacros.h */,
 				EE1888381DA661C400307AA8 /* FBMathUtils.h */,
 				EE1888391DA661C400307AA8 /* FBMathUtils.m */,
+				AA0H264E0100000000000020 /* FBH264Encoder.h */,
+				AA0H264E0100000000000010 /* FBH264Encoder.m */,
+				AA0H264S0100000000000020 /* FBH264Server.h */,
+				AA0H264S0100000000000010 /* FBH264Server.m */,
 				7155D701211DCEF400166C20 /* FBMjpegServer.h */,
 				7155D702211DCEF400166C20 /* FBMjpegServer.m */,
 				719DCF132601EAFB000E765F /* FBNotificationsHelper.h */,
@@ -2521,6 +2537,8 @@
 				641EE6DD2240C5CA00173FCB /* FBDebugLogDelegateDecorator.h in Headers */,
 				641EE6DE2240C5CA00173FCB /* XCUIDevice+FBHealthCheck.h in Headers */,
 				641EE6DF2240C5CA00173FCB /* FBMjpegServer.h in Headers */,
+				AA0H264E0100000000000002 /* FBH264Encoder.h in Headers */,
+				AA0H264S0100000000000002 /* FBH264Server.h in Headers */,
 				641EE6E02240C5CA00173FCB /* XCUIRecorderNodeFinderMatch.h in Headers */,
 				641EE6E12240C5CA00173FCB /* XCUIApplicationProcess.h in Headers */,
 				641EE6E22240C5CA00173FCB /* FBW3CActionsSynthesizer.h in Headers */,
@@ -2765,6 +2783,8 @@
 				EE7E271C1D06C69F001BEC7B /* FBDebugLogDelegateDecorator.h in Headers */,
 				EEDFE1211D9C06F800E6FFE5 /* XCUIDevice+FBHealthCheck.h in Headers */,
 				7155D703211DCEF400166C20 /* FBMjpegServer.h in Headers */,
+				AA0H264E0100000000000003 /* FBH264Encoder.h in Headers */,
+				AA0H264S0100000000000003 /* FBH264Server.h in Headers */,
 				EE35AD761E3B77D600A02D78 /* XCUIRecorderNodeFinderMatch.h in Headers */,
 				EE35AD6C1E3B77D600A02D78 /* XCUIApplicationProcess.h in Headers */,
 				7140974B1FAE1B51008FB2C5 /* FBW3CActionsSynthesizer.h in Headers */,
@@ -3191,6 +3211,8 @@
 				641EE5F72240C5CA00173FCB /* FBResponseJSONPayload.m in Sources */,
 				718226D12587443700661B83 /* GCDAsyncUdpSocket.m in Sources */,
 				641EE5F92240C5CA00173FCB /* FBMjpegServer.m in Sources */,
+				AA0H264E0100000000000001 /* FBH264Encoder.m in Sources */,
+				AA0H264S0100000000000001 /* FBH264Server.m in Sources */,
 				641EE5FA2240C5CA00173FCB /* XCUIDevice+FBHealthCheck.m in Sources */,
 				641EE5FD2240C5CA00173FCB /* FBBaseActionsSynthesizer.m in Sources */,
 				13DE7A46287C2A8D003243C6 /* FBXCAccessibilityElement.m in Sources */,
@@ -3316,6 +3338,8 @@
 				EE158ADB1CBD456F00A3E3F0 /* FBResponseJSONPayload.m in Sources */,
 				714EAA0F2673FDFE005C5B47 /* FBCapabilities.m in Sources */,
 				7155D704211DCEF400166C20 /* FBMjpegServer.m in Sources */,
+				AA0H264E0100000000000004 /* FBH264Encoder.m in Sources */,
+				AA0H264S0100000000000004 /* FBH264Server.m in Sources */,
 				EEDFE1221D9C06F800E6FFE5 /* XCUIDevice+FBHealthCheck.m in Sources */,
 				714D88CE2733FB970074A925 /* FBXMLGenerationOptions.m in Sources */,
 				E444DCB424913C220060D7EB /* RoutingHTTPServer.m in Sources */,
@@ -4275,6 +4299,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 5297SX54T2;
 				INFOPLIST_FILE = WebDriverAgentTests/IntegrationApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4292,6 +4317,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
+				DEVELOPMENT_TEAM = 5297SX54T2;
 				INFOPLIST_FILE = WebDriverAgentTests/IntegrationApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4348,6 +4374,7 @@
 			buildSettings = {
 				CLANG_STATIC_ANALYZER_MODE = deep;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 5297SX54T2;
 				ENABLE_TESTING_SEARCH_PATHS = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = WebDriverAgentRunner/Info.plist;
@@ -4364,7 +4391,7 @@
 					"$(inherited)",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.facebook.WebDriverAgentRunner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexintosh.WebDriverAgentRunner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USES_XCTRUNNER = YES;
 				WARNING_CFLAGS = (
@@ -4400,6 +4427,7 @@
 			baseConfigurationReference = EEE5CABF1C80361500CBBDD9 /* IOSSettings.xcconfig */;
 			buildSettings = {
 				CLANG_STATIC_ANALYZER_MODE = deep;
+				DEVELOPMENT_TEAM = 5297SX54T2;
 				ENABLE_TESTING_SEARCH_PATHS = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = WebDriverAgentRunner/Info.plist;
@@ -4417,7 +4445,7 @@
 					"$(inherited)",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.facebook.WebDriverAgentRunner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexintosh.WebDriverAgentRunner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USES_XCTRUNNER = YES;
 				WARNING_CFLAGS = (

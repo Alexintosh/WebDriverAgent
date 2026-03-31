@@ -25,6 +25,10 @@
 
 static NSUInteger const DefaultStartingPort = 8100;
 static NSUInteger const DefaultMjpegServerPort = 9100;
+static NSUInteger const DefaultH264ServerPort = 9200;
+static int const DefaultH264Bitrate = 4000000;
+static int const DefaultH264KeyframeInterval = 120;
+static NSUInteger FBH264ResolutionScale = 100;
 static NSUInteger const DefaultPortRange = 100;
 
 static char const *const controllerPrefBundlePath = "/System/Library/PrivateFrameworks/TextInput.framework/TextInput";
@@ -163,6 +167,43 @@ static BOOL FBShouldEnforceCustomSnapshots = NO;
   }
 
   return DefaultMjpegServerPort;
+}
+
++ (NSInteger)h264ServerPort
+{
+  if (NSProcessInfo.processInfo.environment[@"H264_SERVER_PORT"] &&
+      [NSProcessInfo.processInfo.environment[@"H264_SERVER_PORT"] length] > 0) {
+    return [NSProcessInfo.processInfo.environment[@"H264_SERVER_PORT"] integerValue];
+  }
+  return DefaultH264ServerPort;
+}
+
++ (int)h264ServerBitrate
+{
+  NSString *val = NSProcessInfo.processInfo.environment[@"H264_BITRATE"];
+  if (val && val.length > 0) {
+    return [val intValue];
+  }
+  return DefaultH264Bitrate;
+}
+
++ (int)h264ServerKeyframeInterval
+{
+  NSString *val = NSProcessInfo.processInfo.environment[@"H264_KEYFRAME_INTERVAL"];
+  if (val && val.length > 0) {
+    return [val intValue];
+  }
+  return DefaultH264KeyframeInterval;
+}
+
++ (NSUInteger)h264ServerResolutionScale
+{
+  return FBH264ResolutionScale;
+}
+
++ (void)setH264ServerResolutionScale:(NSUInteger)scale
+{
+  FBH264ResolutionScale = MAX(25, MIN(100, scale));
 }
 
 + (CGFloat)mjpegScalingFactor

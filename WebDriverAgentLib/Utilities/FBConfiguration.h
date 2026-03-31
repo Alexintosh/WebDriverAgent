@@ -137,6 +137,28 @@ extern NSString *const FBSnapshotMaxDepthKey;
 + (NSInteger)mjpegServerPort;
 
 /**
+ The port number for the H.264 streaming server. Default is 9200.
+ */
++ (NSInteger)h264ServerPort;
+
+/**
+ The average bitrate for H.264 encoding in bits/sec. Default is 4000000 (4 Mbps).
+ */
++ (int)h264ServerBitrate;
+
+/**
+ The maximum number of frames between H.264 keyframes. Default is 120 (2s at 60fps).
+ */
++ (int)h264ServerKeyframeInterval;
+
+/**
+ The resolution scale for H.264 encoding as a percentage (25-100). Default is 100 (full resolution).
+ Lower values reduce resolution for better WiFi performance.
+ */
++ (NSUInteger)h264ServerResolutionScale;
++ (void)setH264ServerResolutionScale:(NSUInteger)scale;
+
+/**
  The scaling factor for frames of the mjpeg stream. The default (and maximum) value is 100,
  which does not perform any scaling. The minimum value must be greater than zero.
  ! Setting this to a value less than 100, especially together with orientation fixing enabled
