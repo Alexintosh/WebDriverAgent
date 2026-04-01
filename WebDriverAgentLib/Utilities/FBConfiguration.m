@@ -26,6 +26,7 @@
 static NSUInteger const DefaultStartingPort = 8100;
 static NSUInteger const DefaultMjpegServerPort = 9100;
 static NSUInteger const DefaultH264ServerPort = 9200;
+static NSUInteger const DefaultInputWSServerPort = 9300;
 static int const DefaultH264Bitrate = 4000000;
 static int const DefaultH264KeyframeInterval = 120;
 static NSUInteger FBH264ResolutionScale = 100;
@@ -176,6 +177,15 @@ static BOOL FBShouldEnforceCustomSnapshots = NO;
     return [NSProcessInfo.processInfo.environment[@"H264_SERVER_PORT"] integerValue];
   }
   return DefaultH264ServerPort;
+}
+
++ (NSInteger)inputWebSocketServerPort
+{
+  if (NSProcessInfo.processInfo.environment[@"INPUT_WS_PORT"] &&
+      [NSProcessInfo.processInfo.environment[@"INPUT_WS_PORT"] length] > 0) {
+    return [NSProcessInfo.processInfo.environment[@"INPUT_WS_PORT"] integerValue];
+  }
+  return DefaultInputWSServerPort;
 }
 
 + (int)h264ServerBitrate

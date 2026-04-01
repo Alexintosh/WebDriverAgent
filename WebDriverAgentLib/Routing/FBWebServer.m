@@ -16,6 +16,7 @@
 #import "FBExceptionHandler.h"
 #import "FBMjpegServer.h"
 #import "FBH264Server.h"
+#import "FBInputWebSocketServer.h"
 #import "FBRouteRequest.h"
 #import "FBRuntimeUtils.h"
 #import "FBSession.h"
@@ -49,6 +50,7 @@ static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
 @property (atomic, assign) BOOL keepAlive;
 @property (nonatomic, nullable) FBTCPSocket *screenshotsBroadcaster;
 @property (nonatomic, nullable) FBTCPSocket *h264Broadcaster;
+@property (nonatomic, nullable) FBInputWebSocketServer *inputTCPServer;
 @end
 
 @implementation FBWebServer
@@ -75,6 +77,7 @@ static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
   [self startHTTPServer];
   [self initScreenshotsBroadcaster];
   [self initH264Broadcaster];
+  [self initInputTCPServer];
 
   self.keepAlive = YES;
   NSRunLoop *runLoop = [NSRunLoop mainRunLoop];
@@ -151,6 +154,17 @@ static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
   }
 }
 
+- (void)initInputTCPServer
+{
+  self.inputTCPServer = [[FBInputWebSocketServer alloc] init];
+  NSError *error;
+  if (![self.inputTCPServer startOnPort:(uint16_t)FBConfiguration.inputWebSocketServerPort error:&error]) {
+    [FBLogger logFmt:@"Cannot init input TCP server on port %@. Error: %@",
+     @(FBConfiguration.inputWebSocketServerPort), error.description];
+    self.inputTCPServer = nil;
+  }
+}
+
 - (void)stopScreenshotsBroadcaster
 {
   if (nil == self.screenshotsBroadcaster) {
@@ -178,6 +192,7 @@ static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
   [FBSession.activeSession kill];
   [self stopScreenshotsBroadcaster];
   [self stopH264Broadcaster];
+  [self.inputTCPServer stop];
   if (self.server.isRunning) {
     [self.server stop:NO];
   }

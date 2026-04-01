@@ -142,6 +142,11 @@ extern NSString *const FBSnapshotMaxDepthKey;
 + (NSInteger)h264ServerPort;
 
 /**
+ The port number for the input WebSocket server. Default is 9300.
+ */
++ (NSInteger)inputWebSocketServerPort;
+
+/**
  The average bitrate for H.264 encoding in bits/sec. Default is 4000000 (4 Mbps).
  */
 + (int)h264ServerBitrate;
