@@ -14,10 +14,29 @@
 #import "FBConfiguration.h"
 #import "FBLogger.h"
 #import "FBXCTestDaemonsProxy.h"
+#import "XCUIDevice.h"
 #import "XCUIDevice+FBHelpers.h"
+#import "XCTRunnerDaemonSession.h"
 #import "XCUIElement+FBTyping.h"
 #import "XCSynthesizedEventRecord.h"
 #import "XCPointerEventPath.h"
+#import "FBKeyboard.h"
+#import "XCUIApplication+FBHelpers.h"
+
+static void FBTypeTextAsync(NSString *text, NSUInteger typingSpeed)
+{
+  XCSynthesizedEventRecord *record = [[XCSynthesizedEventRecord alloc]
+    initWithName:@"Async type"];
+  XCPointerEventPath *path = [[XCPointerEventPath alloc] initForTextInput];
+  [path typeText:text atOffset:0.0 typingSpeed:typingSpeed shouldRedact:NO];
+  [record addPointerEventPath:path];
+  [[XCUIDevice.sharedDevice eventSynthesizer] synthesizeEvent:record
+    completion:(id)^(BOOL result, NSError *invokeError) {
+      if (invokeError) {
+        [FBLogger logFmt:@"AsyncType error: %@", invokeError.localizedDescription];
+      }
+    }];
+}
 
 static const uint64_t kMaxLineLength = 65536; // 64 KB
 
@@ -130,6 +149,8 @@ static const uint64_t kMaxLineLength = 65536; // 64 KB
       [self handleSwipeMessage:msg];
     } else if ([type isEqualToString:@"button"]) {
       [self handleButtonMessage:msg];
+    } else if ([type isEqualToString:@"typeKey"]) {
+      [self handleTypeKeyMessage:msg];
     }
   });
 }
@@ -142,11 +163,21 @@ static const uint64_t kMaxLineLength = 65536; // 64 KB
   if (![valueArray isKindOfClass:[NSArray class]] || valueArray.count == 0) return;
 
   NSString *text = [valueArray componentsJoinedByString:@""];
-  NSUInteger frequency = [msg[@"frequency"] unsignedIntegerValue] ?: [FBConfiguration maxTypingFrequency];
+  NSUInteger frequency = [msg[@"frequency"] unsignedIntegerValue] ?: 1000;
 
-  NSError *error;
-  if (!FBTypeText(text, frequency, &error)) {
-    [FBLogger logFmt:@"InputTCP: FBTypeText failed: %@", error.localizedDescription];
+  if ([msg[@"async"] boolValue]) {
+    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+    FBTypeTextAsync(text, frequency);
+    CFAbsoluteTime elapsed = (CFAbsoluteTimeGetCurrent() - start) * 1000.0;
+    [FBLogger logFmt:@"InputTCP: async type '%@' dispatched in %.1fms", text, elapsed];
+  } else {
+    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+    NSError *error;
+    if (!FBTypeText(text, frequency, &error)) {
+      [FBLogger logFmt:@"InputTCP: FBTypeText failed: %@", error.localizedDescription];
+    }
+    CFAbsoluteTime elapsed = (CFAbsoluteTimeGetCurrent() - start) * 1000.0;
+    [FBLogger logFmt:@"InputTCP: sync type '%@' took %.1fms", text, elapsed];
   }
 }
 
@@ -198,6 +229,19 @@ static const uint64_t kMaxLineLength = 65536; // 64 KB
   if (![XCUIDevice.sharedDevice fb_pressButton:name forDuration:nil error:&error]) {
     [FBLogger logFmt:@"InputTCP: button press failed: %@", error.localizedDescription];
   }
+}
+
+- (void)handleTypeKeyMessage:(NSDictionary *)msg
+{
+#if (!TARGET_OS_TV && __clang_major__ >= 15)
+  NSString *keyName = msg[@"key"];
+  if (!keyName) return;
+  NSUInteger modifierFlags = [msg[@"modifierFlags"] unsignedIntegerValue];
+  NSString *keyValue = [FBKeyboard keyValueForName:keyName] ?: keyName;
+  XCUIApplication *app = XCUIApplication.fb_activeApplication;
+  [app typeKey:keyValue modifierFlags:modifierFlags];
+  [FBLogger logFmt:@"InputTCP: typeKey '%@' mod=%lu", keyValue, (unsigned long)modifierFlags];
+#endif
 }
 
 @end
